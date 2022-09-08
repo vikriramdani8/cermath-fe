@@ -1,0 +1,29 @@
+.wrapper{
+    font-family: 'linotte';
+}
+
+.dashboard-greet{
+    font-size: 30px;
+    color: #25396F;
+}
+
+.dashboard-item{
+    background-color: white;
+    padding: 17px 10px;
+    max-width: 300px;
+    font-size: 1.1em;
+    margin-right: 30px;
+    border-radius: 10px 10px;
+
+    .table-icon-box{
+        width: 50px;
+        padding: 10px;
+        background-color: #7C8DB5;
+        color: white;
+        border-radius: 5px 5px;
+    }
+
+    .item-table{
+        font-family: 'linotte';
+    }
+}

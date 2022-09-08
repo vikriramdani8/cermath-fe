@@ -1,0 +1,18 @@
+<div class="sidebar">
+
+  <div class="title-logo">
+    cerMath
+  </div>
+
+  <div class="menu-sidebar" *ngFor="let menu of menuItem" (click)="goto(menu)" [ngClass]="{'menu-sidebar-active': buttonActive == menu.menuName}">
+    <div class="item-menu" >
+      {{ menu.menuName }}
+    </div>
+  </div>
+  <div class="menu-sidebar" (click)="logout()">
+    <div class="item-menu" >
+      Logout
+    </div>
+  </div>
+
+</div>

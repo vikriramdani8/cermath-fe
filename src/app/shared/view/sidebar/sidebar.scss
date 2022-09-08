@@ -1,0 +1,41 @@
+.sidebar{
+  background: white;
+  height: 100%;
+  padding: 20px;
+  font-family: 'linotte';
+  
+  .title-logo{
+    font-size: 30px;
+    font-weight: 600;
+    color: #435EBE;
+    margin-bottom: 30px;
+  }
+
+  .menu-sidebar{
+    font-size: 18px;
+    font-weight: bold;
+    color: #7C8DB5;
+    cursor: pointer;
+    line-height: 30px;
+    padding: 10px;
+    border-radius: 10px 10px;
+    transition: 0.2s;
+    margin-bottom: 10px;
+  }
+
+  .menu-sidebar:hover{
+    background-color: #F0F1F5;
+    transition: 0.2s;
+  }
+
+  .menu-sidebar:active{
+    background-color: #435EBE !important;
+    transition: 0.2s;
+  }
+
+  .menu-sidebar-active{
+    transition: 0.2s;
+    background-color: #435EBE !important;
+    color: #fff;
+  }
+}

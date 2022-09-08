@@ -1,0 +1,26 @@
+.text-grey{
+    color: #7C8DB5;
+}
+
+.text-blue{
+    color: #435EBE;
+}
+
+.text-darkblue{
+    color: #25396F;
+}
+
+@font-face {
+    font-family: 'opensans';
+    src: url('assets/fonts/open-sans/OpenSans-Regular.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: 'linotte';
+    src: url('assets/fonts/linotte/Linotte-SemiBold.otf') format("truetype");
+}
+
+@font-face {
+    font-family: 'linotte-regullar';
+    src: url('assets/fonts/linotte/Linotte Regular.otf') format("truetype");
+}

@@ -1,0 +1,15 @@
+.wrapper {
+  $sidebar-width: 280px;
+  .sidebar-wrapper{
+    width: $sidebar-width;
+    position: fixed;
+    height: 100%;
+  }
+
+  .page-wrapper{
+    width: calc(100% - #{$sidebar-width});
+    min-height: 100vh;
+    margin-left: $sidebar-width;
+    background-color: #ECEFF6;
+  }
+}

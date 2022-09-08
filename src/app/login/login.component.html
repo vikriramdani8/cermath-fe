@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div class="row align-items-center" style="height: 100vh;">
+        <div class="col-md-7 bg-danger h-100 bg-image" style="background-image: url('assets/images/bg-forest.jpg'); height: 100vh">
+            <div class="row align-items-center justify-content-center h-100">
+                <div class="col-md-10 p-3">
+                    <p class="text-white title-text">CerMath <br>Learning Content <br>Management System</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 bg-white h-100">
+            <div class="row align-items-center justify-content-center h-100">
+                <div class="col-md-8 p-4 form-login">
+                    <p class="text-center text-login mb-5">Sign In</p>
+                    <form [formGroup] = "loginForm">
+                        <div class="form-group mb-3">
+                            <label class="sr-only form-label" for="email">Email address</label>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control" id="email" placeholder="Email" formControlName = "email" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only form-label" for="password">Password</label>
+                            <div class="input-group mb-2">
+                                <input type="password" class="form-control" id="password" placeholder="Password" formControlName = "password" autocomplete="off">
+                            </div>
+                        </div>
+                        <!-- <p class="text-right text-click">Forgot Password?</p> -->
+
+                        <div class="col-12 text-center mt-5 mb-3">
+                            <button class="btn-login" (click)="login()">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

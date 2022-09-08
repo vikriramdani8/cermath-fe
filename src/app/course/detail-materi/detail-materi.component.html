@@ -1,0 +1,284 @@
+<div class="wrapper p-4">
+    <div class="course-greet">
+        <p>Detail Materi</p>
+    </div>
+
+    <div class="container" *ngIf="loadingMateri">
+        <div class="col-12 d-flex justify-content-center align-items-center" style="height: 75vh;">
+            <app-loading></app-loading>
+        </div>
+    </div>
+
+    <div class="container" *ngIf="!loadingMateri">
+        <div class="col-12 bg-white p-4">
+            <div class="col-12 d-flex">
+                <h4 class="m-0">General</h4>
+                <div class="p-2 pb-0 pt-0">
+                    <img src="assets/images/icon_pencil.svg" width="20" style="cursor: pointer;" (click)="onEdit()">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-9">
+                    <form [formGroup]="materiForm">
+                        <table class="w-100 table-detail">
+                            <tr>
+                                <td class="pt-3" width="18%" style="vertical-align: top;">
+                                    <label for="lessonName">Nama Materi</label>
+                                </td>
+                                <td class="pt-3" *ngIf="!editMateri">
+                                    <p class="m-0">: {{ detailMateri['lessonName'] }}</p>
+                                </td>
+                                <td class="p-2" *ngIf="editMateri">
+                                    <input type="text" name="lessonName" class="form-control" id="lessonName"
+                                        formControlName="lessonName" autocomplete="off">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pt-3" style="vertical-align: top;">
+                                    <label for="classId">Kelas</label>
+                                </td>
+                                <td class="pt-3" *ngIf="!editMateri">
+                                    <p class="m-0">: {{ detailMateri['className'] }}</p>
+                                </td>
+                                <td class="p-2" *ngIf="editMateri">
+                                    <select class="form-control" name="" id="classId" formControlName="classId"
+                                        autocomplete="off">
+                                        <option value="" disabled>Pilih Kelas</option>
+                                        <option *ngFor="let data of listClass" value="{{ data['classId'] }}">{{
+                                            data['className'] }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pt-3" style="vertical-align: top;">
+                                    <label for="lessonDescription">Deskripsi</label>
+                                </td>
+                                <td class="pt-3" *ngIf="!editMateri">
+                                    <p class="m-0">: {{ detailMateri['lessonDescription'] }}</p>
+                                </td>
+                                <td class="p-2" *ngIf="editMateri">
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="lessonDescription"
+                                            formControlName="lessonDescription" autocomplete="off" rows="6"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="col-sm-3 d-flex flex-column justify-content-center align-items-center">
+                    <div class="img-icon d-flex flex-column justify-content-center">
+                        <img [src]="imgIcon" alt="">
+                    </div>
+                    <form action="" *ngIf="editMateri">
+                        <label for="imgIcon">
+                            <span class="btn btn-light mt-3">Chane Icon</span>
+                        </label>
+                        <input hidden type="file" name="imgIcon" id="imgIcon" accept=".png, .jpg, .jpeg"
+                            (change)="updateImageIcon($event.target)" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="w-100 d-flex" *ngIf="editMateri">
+                <button class="btn btn-danger m-2" (click)="editMateri = !editMateri">Cancel</button>
+                <button class="btn btn-primary m-2" (click)="updateMateri()">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3" *ngIf="!loadingMateri">
+        <div class="col-12 bg-white p-4">
+            <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+                <h4 class="m-0">Sub Materi</h4>
+                <button class="btn btn-success" (click)="addSubMateri();">Tambah Sub Materi</button>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="5%">No.</th>
+                        <th scope="col">Nama Sub Materi</th>
+                        <th class="text-center" scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="detailMateri.sublesson.length == 0">
+                        <td colspan="3" class="text-center">Belum ada Sub Materi</td>
+                    </tr>
+                    <tr *ngFor="let data of detailMateri.sublesson; let i = index;">
+                        <td class="text-center">{{ i+1 }}</td>
+                        <td>{{ data['sublessonName'] }}</td>
+                        <td class="text-center d-flex justify-content-center">
+                            <button class="btn btn-secondary"
+                                (click)="editSubMateri = false; openDetailSubMateri(data.sublessonId)">
+                                Detail
+                            </button>
+                            <div style="width: 1em;"></div>
+                            <button class="btn btn-primary" (click)="openEditMateri(data.sublessonId)">
+                                Edit
+                            </button>
+                            <div style="width: 1em;"></div>
+                            <button (click)="confirmDeleteSubMateri(data.sublessonId)" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="container mt-3" *ngIf="!loadingMateri">
+        <div class="col-12 bg-white p-4">
+            <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+                <h4 class="m-0">Latihan Soal</h4>
+                <button class="btn btn-success" (click)="addSoal()">Tambah Latihan Soal</button>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="5%">No.</th>
+                        <th scope="col">Nama Latihan</th>
+                        <th class="text-center" scope="col">Kesulitan</th>
+                        <th class="text-center" scope="col">Max Score</th>
+                        <th class="text-center" scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="detailMateri.listquiz.length == 0">
+                        <td colspan="5" class="text-center">Belum ada latihan soal</td>
+                    </tr>
+                    <tr *ngFor="let data of detailMateri.listquiz; let i = index;">
+                        <td class="text-center">{{ i+1 }}</td>
+                        <td>{{ data['quizName'] }}</td>
+                        <td class="text-center">{{ data['difficulity'] }}</td>
+                        <td class="text-center">{{ data['maxScore'] }}</td>
+                        <td class="text-center d-flex justify-content-center">
+                            <div style="width: 1em;"></div>
+                            <button class="btn btn-primary" (click)="openEditQuiz(data)">
+                                Edit
+                            </button>
+                            <div style="width: 1em;"></div>
+                            <button class="btn btn-danger" (click)="confirmDeleteQuiz(data)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTambahSublesson" tabindex="-1" role="dialog"
+    aria-labelledby="modalTambahSublessonTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ editSubMateri ? 'Edit' : 'Tambah' }} Sub Materi
+                </h5>
+                <button type="button" class="close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="col-12">
+                    <form [formGroup]="subMateriForm">
+                        <table class="w-100 table-detail">
+                            <tr>
+                                <td class="p-2">
+                                    <div class="form-group">
+                                        <label for="sublessonName">Nama Sub Materi</label>
+                                        <input type="text" class="form-control" id="sublessonName"
+                                            formControlName="sublessonName" autocomplete="off">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
+                                    <div class="form-group">
+                                        <label for="sublessonDescription">Deskripsi Sub Materi</label>
+                                        <textarea class="form-control" id="sublessonDescription"
+                                            formControlName="sublessonDescription" autocomplete="off"></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
+                                    <p class="m-0">Upload Dokumen Materi</p>
+                                    <div class="container-dragdrop d-flex flex-column justify-content-center" appDnd
+                                        (fileDropped)="onFileDropped($event)">
+                                        <input type="file" #fileDropRef id="fileDropRef" accept=".pdf"
+                                            (change)="fileBrowseHandler($event.target)" />
+
+                                        <div class="d-flex flex-column align-items-center justify-content-center"
+                                            *ngIf="!base64Pdf">
+                                            <div class="circle-drop d-flex align-items-center justify-content-center">
+                                                <img src="assets/images/icon_upload.svg" alt="" width="27px">
+                                            </div>
+
+                                            <p class="mt-2">Drop materi pdf disini</p>
+                                        </div>
+
+                                        <div class="d-flex flex-column align-items-center justify-content-center"
+                                            *ngIf="base64Pdf">
+                                            <div class="circle-drop d-flex align-items-center justify-content-center">
+                                                <img src="assets/images/icon_uploaded.svg" alt="" width="27px">
+                                            </div>
+
+                                            <p class="mt-2">Materi berhasil diupload</p>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="closeModal()">Close</button>
+                <button type="button" class="btn btn-primary"
+                    (click)="editSubMateri ? onEditSubMateri() : onSaveSubMateri()">
+                    {{ editSubMateri ? 'Update' : 'Simpan' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetailSublesson" tabindex="-1" role="dialog"
+    aria-labelledby="modalTambahSublessonTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Detail Sub Materi</h5>
+                <button type="button" class="close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-3">
+                <table class="w-100 mb-3">
+                    <tr>
+                        <td width="20%">Nama Materi</td>
+                        <td>: {{ detailSubMateri['sublessonName'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Deskripsi</td>
+                        <td>: {{ detailSubMateri['sublessonDescription'] }}</td>
+                    </tr>
+                </table>
+
+                <pdf-viewer [src]="detailSubMateri['document']" [render-text]="true" [original-size]="false"
+                    style="width: 100%; height: 500px"></pdf-viewer>
+
+            </div>
+        </div>
+    </div>
+</div>

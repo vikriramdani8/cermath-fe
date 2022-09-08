@@ -1,0 +1,196 @@
+<div class="wrapper p-4">
+    <div class="course-greet">
+        <p>{{ editQuiz ? 'Edit' : 'Tambah' }} Latihan Soal</p>
+    </div>
+
+    <div class="container" *ngIf="loadingMaster || loadingQuiz">
+        <div class="col-12 d-flex justify-content-center align-items-center" style="height: 75vh;">
+            <app-loading></app-loading>
+        </div>
+    </div>
+
+    <div class="container" *ngIf="!loadingMaster && !loadingQuiz">
+        <div class="col-12 bg-white p-4">
+            <form [formGroup]="quizForm" class="pb-0">
+                <h4>Informasi</h4>
+
+                <table class="w-100 mt-3">
+                    <tr>
+                        <td>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="lessonName">Nama Materi</label>
+                                        <input type="text" name="lessonName" class="form-control" disabled autocomplete="off"
+                                            [value]="detailMateri['lessonName']">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="className">Kelas</label>
+                                        <input type="text" name="className" class="form-control" disabled autocomplete="off"
+                                            [value]="detailMateri['className']">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="quizName">Nama Latihan</label>
+                                        <input type="text" formControlName="quizName" class="form-control" id="quizName"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="difficulity">Tingkat Kesulitan</label>
+                                        <select formControlName="difficulity" class="form-control"
+                                            id="difficulity" autocomplete="off">
+                                            <option value="1">Mudah</option>
+                                            <option value="2">Normal</option>
+                                            <option value="3">Sulit</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-flex mt-3">
+                                <button class="btn btn-danger m-2" (click)="back()">Batal</button>
+                                <button class="btn btn-primary m-2" (click)="editQuiz ? onEditQuiz() : simpanQuiz()"> {{ editQuiz ? 'Update' : 'Simpan' }}</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-3" *ngIf="!loadingMaster && !loadingQuiz">
+        <div class="col-12 bg-white p-4">
+            <form class="pt-0 pb-3">
+                <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="m-0">List Pertanyaan</h4>
+                    <button class="btn btn-success" (click)="openModal()">Tambah Pertanyaan</button>
+                </div>
+
+                <table class="table table-hover" style="table-layout:fixed;">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="50%">Soal</th>
+                            <th scope="col">Score</th>
+                            <th class="text-center" scope="col">Aksi</th>
+                        </tr>
+                        <tr *ngIf="listQuiz.length == 0">
+                            <td colspan="3" class="text-center">Belum ada pertanyaan</td>
+                        </tr>
+                        <tr *ngFor="let data of listQuiz; let i = index;">
+                            <td class="skip-text">{{ data['questionName'] }}</td>
+                            <td>{{ data['questionScore'] }}</td>
+                            <td class="text-center d-flex justify-content-center">
+                                <button class="btn btn-danger" (click)="confirmDeleteQuestion(i)">
+                                    Delete
+                                </button>
+                                <div style="width: 1em;"></div>
+                                <button class="btn btn-primary" (click)="openEditQuestion(data, i)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    </thead>
+                </table>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTambahQuiz" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ editQuiz ? 'Edit' : 'Tambah' }} Pertanyaan
+                </h5>
+                <button type="button" class="close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="questionForm">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="question">Pertanyaan</label>
+                                <textarea type="text" formControlName="questionName" class="form-control" name="question" id="question"
+                                    autocomplete="off" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-3">
+
+                            <label class="m-0">Upload Gambar Pertanyaan (Optional)</label>
+                            <div class="container-dragdrop d-flex flex-column justify-content-center" appDnd
+                                (fileDropped)="onFileDropped($event)">
+                                <input type="file" #fileDropRef id="fileDropRef" accept=".jpg, .jpeg, .png"
+                                    (change)="fileBrowseHandler($event.target)" />
+
+                                <div class="d-flex flex-column align-items-center justify-content-center"
+                                    *ngIf="!questionImage">
+                                    <div class="circle-drop d-flex align-items-center justify-content-center">
+                                        <img src="assets/images/icon_upload.svg" alt="" width="27px">
+                                    </div>
+
+                                    <p class="mt-2">Drop gambar soal disini</p>
+                                </div>
+
+                                <div class="d-flex flex-column align-items-center justify-content-center"
+                                    *ngIf="questionImage">
+                                    <div class="circle-drop d-flex align-items-center justify-content-center">
+                                        <img src="assets/images/icon_uploaded.svg" alt="" width="27px">
+                                    </div>
+
+                                    <p class="mt-2">Gambar soal berhasil diupload</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 mt-3">
+                            <label for="questionScore">Score</label>
+                            <input type="text" formControlName="questionScore" class="form-control" name="questionScore" id="questionScore" autocomplete="off">
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <label for="answer1">Jawaban 1</label>
+                            <textarea type="text" formControlName="answer1" class="form-control" name="answer1" id="question" autocomplete="off"
+                                rows="1"></textarea>
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <label for="answer2">Jawaban 2</label>
+                            <textarea type="text" formControlName="answer2" class="form-control" name="answer2" id="question" autocomplete="off"
+                                rows="1"></textarea>
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <label for="answer3">Jawaban 3</label>
+                            <textarea type="text" formControlName="answer3" class="form-control" name="answer3" id="question" autocomplete="off"
+                                rows="1"></textarea>
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <label for="correctAnswer">Jawaban 4 (Jawaban Benar)</label>
+                            <textarea type="text" formControlName="correctAnswer" class="form-control" name="correctAnswer" id="correctAnswer" autocomplete="off"
+                                rows="1"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="w-100 d-flex mt-3">
+                                <button class="btn btn-danger m-2">Batal</button>
+                                <button class="btn btn-primary m-2" (click)="editQuestion ? editPertanyaan() : simpanPertanyaan() ">{{ editQuestion ? 'Update' : 'Simpan' }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
