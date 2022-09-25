@@ -78,7 +78,7 @@ export class MateriComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(files[0]);
         reader.onload = () => {
-          this.base64Image = reader.result;
+          this.base64Image = reader.result
         };
       } else {
         alert("Max file size 700kb");

@@ -210,6 +210,35 @@
                             </tr>
                             <tr>
                                 <td class="p-2">
+                                    <p class="m-0">Upload icon sublesson</p>
+                                    <div class="container-dragdrop d-flex flex-column justify-content-center" appDnd
+                                        (fileDropped)="onFileDroppedImage($event)">
+                                        <input type="file" #fileDropRef id="fileDropRef" accept=".png, .jpeg, .jpg"
+                                            (change)="fileBrowseHandlerImage($event.target)" />
+
+                                        <div class="d-flex flex-column align-items-center justify-content-center"
+                                            *ngIf="!base64ImageSublesson">
+                                            <div class="circle-drop d-flex align-items-center justify-content-center">
+                                                <img src="assets/images/icon_upload.svg" alt="" width="27px">
+                                            </div>
+
+                                            <p class="mt-2">Drop icon sublesson disini</p>
+                                        </div>
+
+                                        <div class="d-flex flex-column align-items-center justify-content-center"
+                                            *ngIf="base64ImageSublesson">
+                                            <div class="circle-drop d-flex align-items-center justify-content-center">
+                                                <img src="assets/images/icon_uploaded.svg" alt="" width="27px">
+                                            </div>
+
+                                            <p class="mt-2">Materi berhasil diupload</p>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">
                                     <p class="m-0">Upload Dokumen Materi</p>
                                     <div class="container-dragdrop d-flex flex-column justify-content-center" appDnd
                                         (fileDropped)="onFileDropped($event)">

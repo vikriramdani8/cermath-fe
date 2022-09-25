@@ -15,13 +15,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MateriService } from './services/materi.service';
 import { GeneralService } from './services/general.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ShowPdfComponent } from './show-pdf/show-pdf.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SidebarComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

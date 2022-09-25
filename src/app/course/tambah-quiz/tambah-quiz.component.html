@@ -160,7 +160,7 @@
                         </div>
                         <div class="col-sm-12 mt-3">
                             <label for="questionScore">Score</label>
-                            <input type="text" formControlName="questionScore" class="form-control" name="questionScore" id="questionScore" autocomplete="off">
+                            <input type="number" formControlName="questionScore" class="form-control" name="questionScore" id="questionScore" autocomplete="off">
                         </div>
                         <div class="col-sm-6 mt-3">
                             <label for="answer1">Jawaban 1</label>
@@ -178,9 +178,21 @@
                                 rows="1"></textarea>
                         </div>
                         <div class="col-sm-6 mt-3">
-                            <label for="correctAnswer">Jawaban 4 (Jawaban Benar)</label>
-                            <textarea type="text" formControlName="correctAnswer" class="form-control" name="correctAnswer" id="correctAnswer" autocomplete="off"
+                            <label for="answer4">Jawaban 4</label>
+                            <textarea type="text" formControlName="answer4" class="form-control" name="answer4" id="answer4" autocomplete="off"
                                 rows="1"></textarea>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="form-group">
+                                <label for="correctAnswer">Jawaban Benar</label>
+                                <select formControlName="correctAnswer" class="form-control"
+                                    id="difficulity" autocomplete="off">
+                                    <option value="answer1">Jawaban 1</option>
+                                    <option value="answer2">Jawaban 2</option>
+                                    <option value="answer3">Jawaban 3</option>
+                                    <option value="answer4">Jawaban 4</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="w-100 d-flex mt-3">

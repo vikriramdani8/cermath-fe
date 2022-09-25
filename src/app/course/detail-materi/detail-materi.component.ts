@@ -26,6 +26,7 @@ export class DetailMateriComponent implements OnInit {
   editSubMateri = false;
   detailMateri: any = {};
   base64Pdf: any = '';
+  base64ImageSublesson : any = '';
   detailSubMateri: any = {};
   loadingMateri = true;
 
@@ -76,6 +77,9 @@ export class DetailMateriComponent implements OnInit {
         if (res.data) {
           this.imgIcon = res.data.lessonImage
           this.detailMateri = res.data;
+          this.detailMateri['listquiz'].forEach((element: any) => {
+            element['difficulity'] =  element['difficulity'] == 1 ? 'Mudah' : element['difficulity'] == 2 ? 'Normal' : 'Sulit';
+          });
           this.detailMateri.className = this.generalService.romanize(this.detailMateri.className);
         }
       }
@@ -155,8 +159,16 @@ export class DetailMateriComponent implements OnInit {
     this.prepareFilesList($event);
   }
 
+  onFileDroppedImage($event: any){
+    this.prepareFilesListImage($event);
+  }
+
   fileBrowseHandler(files: any) {
     this.prepareFilesList(files.files);
+  }
+
+  fileBrowseHandlerImage(files: any) {
+    this.prepareFilesListImage(files.files);
   }
 
   prepareFilesList(files: Array<any>) {
@@ -173,14 +185,29 @@ export class DetailMateriComponent implements OnInit {
     }
   }
 
+  prepareFilesListImage(files: Array<any>) {
+    if (files.length > 0) {
+      if (files[0].size < 500000) {
+        const reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = () => {
+          this.base64ImageSublesson = reader.result;
+        };
+      } else {
+        alert("Max file size 500kb");
+      }
+    }
+  }
+
   onSaveSubMateri() {
     let body = {
       ...this.subMateriForm.getRawValue(),
       lessonPdf: this.base64Pdf,
-      lessonId: this.materiId
+      lessonId: this.materiId,
+      sublessonImage: this.base64ImageSublesson
     }
 
-    if (this.subMateriForm.valid && this.base64Pdf) {
+    if (this.subMateriForm.valid && this.base64Pdf && this.base64ImageSublesson) {
       this.generalService.showLoading();
       this.materiService.postSubMateri(body).subscribe(res => {
         if (res.success) {
@@ -193,6 +220,7 @@ export class DetailMateriComponent implements OnInit {
         }
       }, error => {
         console.log(error);
+        this.generalService.swalAlert('Error!', 'Terjadi kesalahan dalam proses', 'error')
       });
     } else {
       this.generalService.swalAlert('Invalid!', 'Field tidak ada yang boleh kosong', 'warning');

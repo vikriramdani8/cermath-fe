@@ -51,6 +51,7 @@ export class TambahQuizComponent implements OnInit {
       answer1: ["", Validators.required],
       answer2: ["", Validators.required],
       answer3: ["", Validators.required],
+      answer4: ["", Validators.required],
       correctAnswer: ["", Validators.required],
       questionScore: ["", Validators.required]
     });
@@ -153,9 +154,28 @@ export class TambahQuizComponent implements OnInit {
       questionType: this.questionImage ? 'image' : 'text'
     }
 
+    body['correctAnswer'] = body[body['correctAnswer']];
+
     if (this.questionForm.valid) {
       this.listQuiz.push(body);
       this.closeModal();
+    } else {
+      this.generalService.swalAlert('Invalid!', 'Field tidak ada yang boleh kosong', 'warning');
+    }
+  }
+
+  editPertanyaan() {
+    let body = {
+      ...this.questionForm.getRawValue(),
+      questionImage: this.questionImage,
+      questionType: this.questionImage ? 'image' : 'text'
+    }
+
+    body['correctAnswer'] = body[body['correctAnswer']];
+
+    if (this.questionForm.valid) {
+      this.closeModal();
+      this.listQuiz[this.indexQuestion] = body;
     } else {
       this.generalService.swalAlert('Invalid!', 'Field tidak ada yang boleh kosong', 'warning');
     }
@@ -207,21 +227,6 @@ export class TambahQuizComponent implements OnInit {
     this.openModal();
   }
 
-  editPertanyaan() {
-    let body = {
-      ...this.questionForm.getRawValue(),
-      questionImage: this.questionImage,
-      questionType: this.questionImage ? 'image' : 'text'
-    }
-
-    if (this.questionForm.valid) {
-      this.closeModal();
-      this.listQuiz[this.indexQuestion] = body;
-    } else {
-      this.generalService.swalAlert('Invalid!', 'Field tidak ada yang boleh kosong', 'warning');
-    }
-  }
-
   back() {
     history.back();
   }
@@ -242,7 +247,7 @@ export class TambahQuizComponent implements OnInit {
     if (this.listQuiz.length == 0) {
       this.generalService.swalAlert('Invalid!', 'List pertanyaan tidak boleh kosong', 'warning');
     } else {
-      if (this.questionForm.valid) {
+      if (this.quizForm.valid) {
         this.generalService.showLoading();
         this.materiService.putEditQuiz(body, this.quizId).subscribe(res => {
           if (res.success) {

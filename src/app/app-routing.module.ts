@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'showPdf',
+    loadChildren: () => import('./show-pdf/show-pdf.module').then(m => m.ShowPdfModule)
+  },
+  {
     path : '',
     component : HomeComponent,
     data : { title : 'Home' },
