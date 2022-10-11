@@ -12,10 +12,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
-  {
-    path: 'showPdf',
-    loadChildren: () => import('./show-pdf/show-pdf.module').then(m => m.ShowPdfModule)
-  },
+  // {
+  //   path: 'showPdf',
+  //   loadChildren: () => import('./show-pdf/show-pdf.module').then(m => m.ShowPdfModule)
+  // },
   {
     path : '',
     component : HomeComponent,

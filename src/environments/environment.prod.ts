@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://localhost:7001/api/mypartner',
+  apiBaseUrl: 'https://cermath.tech:3000/api',
 };
