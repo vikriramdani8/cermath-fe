@@ -53,7 +53,7 @@
                                     <p class="m-0">Upload Gambar Materi</p>
                                     <div class="container-dragdrop d-flex flex-column justify-content-center" appDnd
                                         (fileDropped)="onFileDropped($event)">
-                                        <input type="file" #fileDropRef id="fileDropRef" accept=".png, .jpg, .jpeg" (change)="fileBrowseHandler($event.target)" />
+                                        <input type="file" #fileDropRef id="fileDropRef" accept=".png, .jpg, .jpeg, .svg" (change)="fileBrowseHandler($event.target)" />
 
                                         <div class="d-flex flex-column align-items-center justify-content-center"
                                             *ngIf="!base64Image">

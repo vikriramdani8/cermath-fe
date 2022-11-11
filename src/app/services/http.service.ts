@@ -43,8 +43,8 @@ export class HttpService {
 
   get(serviceApi: string, serviceUrl: string, query?: any, path?: string, options?: RequestOptions): Observable<any> {
     const requestOptions: RequestOptions = this.prepareRequest(query, options);
-
-    let url = `${env.apiBaseUrl}/${serviceApi}/${serviceUrl}`;
+    
+    let url = serviceUrl ? `${env.apiBaseUrl}/${serviceApi}/${serviceUrl}` : `${env.apiBaseUrl}/${serviceApi}`;
 
     if (path) { url = `${url}/${path}`; }
 

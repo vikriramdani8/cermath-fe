@@ -16,7 +16,7 @@ export class MateriService {
     }
 
     getClass() {
-        return this.httpService.get('materi', 'class').pipe(map(res => res));
+        return this.httpService.get('master', 'class').pipe(map(res => res));
     }
 
     postMateri(data: any) {
