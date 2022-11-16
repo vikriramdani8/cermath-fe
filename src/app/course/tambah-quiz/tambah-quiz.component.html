@@ -81,6 +81,7 @@
                 <table class="table table-hover" style="table-layout:fixed;">
                     <thead>
                         <tr>
+                            <th class="text-center" scope="col" width="6%">No.</th>
                             <th scope="col" width="50%">Soal</th>
                             <th scope="col">Score</th>
                             <th class="text-center" scope="col">Aksi</th>
@@ -89,6 +90,7 @@
                             <td colspan="3" class="text-center">Belum ada pertanyaan</td>
                         </tr>
                         <tr *ngFor="let data of listQuiz; let i = index;">
+                            <td class="text-center">{{ i+1 }}</td>
                             <td class="skip-text">{{ data['questionName'] }}</td>
                             <td>{{ data['questionScore'] }}</td>
                             <td class="text-center d-flex justify-content-center">

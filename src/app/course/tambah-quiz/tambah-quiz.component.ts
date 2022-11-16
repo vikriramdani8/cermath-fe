@@ -221,10 +221,19 @@ export class TambahQuizComponent implements OnInit {
     this.editQuestion = true;
     this.questionImage = data['questionImage'];
     this.questionForm.patchValue({
-      ...data,
-      correctAnswer: 'answer'+data['correctAnswer']
+      ...data
     })
 
+    for (let i = 1; i < 5; i++) {
+      if(data['correctAnswer'] == data['answer'+i]){
+        this.questionForm.patchValue({
+          correctAnswer: 'answer'+i
+        });
+        i = 5;
+      }
+    }
+
+    console.log(this.questionForm.getRawValue());
     this.openModal();
   }
 
